@@ -1,0 +1,21 @@
+{
+  "name": "karma-coffee-coverage",
+  "version": "1.0.0",
+  "description": "Plugins for Karma to use the coffee-coverage tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "istanbul",
+    "coffee",
+    "coverage",
+    "karma",
+    "plugin"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "coffee-coverage": "^0.5.4"
+  }
+}
