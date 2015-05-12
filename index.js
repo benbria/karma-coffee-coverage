@@ -1,4 +1,4 @@
-//'use strict'
+'use strict';
 var fs = require('fs');
 var coffeeCoverage = require('coffee-coverage');
 var CoverageInstrumentor = coffeeCoverage.CoverageInstrumentor;
@@ -28,7 +28,7 @@ var StringStream = (function() {
  */
 var addInitCoverage = function(config, logger, helper) {
     var log = logger.create('framework.coffee-coverage');
-    var basePath, dest, defaultOptions, instrumentor, initJs, singleOptions;
+    var basePath, dest, defaultOptions, instrumentor, initJs, options, singleOptions;
 
     if ("undefined" !== typeof config.framework) {
         if (!config.framework.initAllSources) return;
