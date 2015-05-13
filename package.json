@@ -4,7 +4,7 @@
   "description": "Plugins for Karma to use the coffee-coverage tool",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "./node_modules/.bin/mocha"
   },
   "keywords": [
     "istanbul",
@@ -17,5 +17,11 @@
   "license": "MIT",
   "dependencies": {
     "coffee-coverage": "^0.5.4"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "lodash.assign": "^3.1.0",
+    "mocha": "^2.2.4",
+    "sinon": "^1.14.1"
   }
 }

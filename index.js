@@ -1,7 +1,8 @@
-'use strict';
+"use strict";
 var fs = require('fs');
 var coffeeCoverage = require('coffee-coverage');
 var CoverageInstrumentor = coffeeCoverage.CoverageInstrumentor;
+var ISTANBUL_COVERAGE_VAR = '__coverage__';
 
 /**
  * Mimics the `StringStream` class found in `coffee-coverage`. We use it to get init data from all our instrumented
@@ -14,7 +15,7 @@ var StringStream = (function() {
 
     StringStream.prototype.write = function(data) {
         this.data += data;
-    }
+    };
 
     return StringStream;
 })();
@@ -41,12 +42,12 @@ var addInitCoverage = function(config, logger, helper) {
         return;
     }
 
-    defaultOptions = {
-        coverageVar: '__coverage__',
-        instrumentor: 'istanbul'
+    defaultOptions = {};
+    if (config.framework.instrumentor === 'istanbul') {
+        defaultOptions.coverageVar = ISTANBUL_COVERAGE_VAR;
     }
 
-    options = helper.merge(defaultOptions, config.framework || {});
+    options = helper.merge({}, defaultOptions, config.framework || {});
 
     instrumentor = new CoverageInstrumentor(options);
 
@@ -56,7 +57,7 @@ var addInitCoverage = function(config, logger, helper) {
     });
     instrumentor.instrumentDirectory(basePath, null, singleOptions);
     fs.writeFileSync(dest, initJs.data);
-}
+};
 
 addInitCoverage.$inject = ['config.coffeeCoverage', 'logger', 'helper'];
 
