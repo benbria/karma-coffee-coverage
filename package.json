@@ -2,10 +2,6 @@
   "name": "karma-coffee-coverage",
   "version": "1.0.0",
   "description": "Plugins for Karma to use the coffee-coverage tool",
-  "main": "index.js",
-  "scripts": {
-    "test": "./node_modules/.bin/mocha"
-  },
   "keywords": [
     "istanbul",
     "coffee",
@@ -13,8 +9,15 @@
     "karma",
     "plugin"
   ],
-  "author": "",
+  "author": "Benbria (http://www.benbria.com/)",
   "license": "MIT",
+  "contributors": [
+    "Calvin Wiebe (https://github.com/calvinwiebe)",
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benbria/karma-coffee-coverage.git"
+  },
   "dependencies": {
     "coffee-coverage": "^0.5.4"
   },
@@ -23,5 +26,12 @@
     "lodash.assign": "^3.1.0",
     "mocha": "^2.2.4",
     "sinon": "^1.14.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "engines": {
+    "node": ">=0.10.0"
   }
 }
