@@ -27,15 +27,16 @@ var StringStream = (function() {
  * init code and write that code to `dest`. You can then tell karma to include this file to get a zero count for _all_
  * files you wish to know about.
  */
-var addInitCoverage = function(config, logger, helper) {
+var initCoveragePlugin = function(config, logger, helper) {
     var log = logger.create('framework.coffee-coverage');
     var basePath, dest, defaultOptions, instrumentor, initJs, options, singleOptions;
+    config = config || {};
+    config.framwork = config.framwork || {};
 
-    if ("undefined" !== typeof config.framework) {
-        if (!config.framework.initAllSources) return;
-        basePath = config.framework.sourcesBasePath;
-        dest = config.framework.dest;
-    }
+    if (!config.framework.initAllSources) return;
+
+    basePath = config.framework.sourcesBasePath;
+    dest = config.framework.dest;
 
     if (!basePath || !dest) {
         log.warn('Need `sourcesBasePath` and `dest` for framework');
@@ -47,7 +48,7 @@ var addInitCoverage = function(config, logger, helper) {
         defaultOptions.coverageVar = ISTANBUL_COVERAGE_VAR;
     }
 
-    options = helper.merge({}, defaultOptions, config.framework || {});
+    options = helper.merge({}, defaultOptions, config.framework);
 
     instrumentor = new CoverageInstrumentor(options);
 
@@ -59,9 +60,41 @@ var addInitCoverage = function(config, logger, helper) {
     fs.writeFileSync(dest, initJs.data);
 };
 
-addInitCoverage.$inject = ['config.coffeeCoverage', 'logger', 'helper'];
+initCoveragePlugin.$inject = ['config.coffeeCoverage', 'logger', 'helper'];
+
+/**
+ * Transform a coffee file into js source that is instrumented with coffee-coverage
+ */
+var createPreprocessor = function(args, config, logger, helper) {
+    var log = logger.create('preprocessor.coffee-coverage');
+    var options = {};
+    config = config || {};
+    config.preprocessor = config.preprocessor || {};
+
+    if (config.preprocessor.instrumentor === 'istanbul') {
+        options.coverageVar = ISTANBUL_COVERAGE_VAR;
+    }
+
+    options = helper.merge({}, options, config.preprocessor);
+
+    var instrumentor = new CoverageInstrumentor(options);
+
+    return function (content, file, done) {
+        try {
+            var instrumented = instrumentor.instrumentCoffee(file.originalPath, content);
+            var js = options.noInit ? instrumented.js : instrumented.init + instrumented.js;
+            file.path = file.originalPath.replace(/\.coffee$/, '.js');
+            done(null, js);
+        } catch (err) {
+            done(err);
+        }
+    }
+};
+
+createPreprocessor.$inject = ['args', 'config.coffeeCoverage', 'logger', 'helper'];
 
 // PUBLISH DI MODULE
 module.exports = {
-  'framework:coffee-coverage': ['factory', addInitCoverage]
+  'framework:coffee-coverage'   : ['factory', initCoveragePlugin],
+  'preprocessor:coffee-coverage': ['factory', createPreprocessor]
 };
