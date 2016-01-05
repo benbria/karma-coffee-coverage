@@ -18,7 +18,7 @@ preprocessors: [
 
 // configure the processor plugin to use `istanbul` style
 coffeeCoverage: {
-    preprocessors: {
+    preprocessor: {
         instrumentor: 'istanbul'
     }
 }
