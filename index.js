@@ -1,5 +1,6 @@
 "use strict";
 var fs = require('fs');
+var path = require('path');
 var coffeeCoverage = require('coffee-coverage');
 var CoverageInstrumentor = coffeeCoverage.CoverageInstrumentor;
 var ISTANBUL_COVERAGE_VAR = '__coverage__';
@@ -81,10 +82,10 @@ var createPreprocessor = function(args, config, logger, helper) {
 
     return function (content, file, done) {
         try {
-            var instrumented = instrumentor.instrumentCoffee(file.originalPath, content);
+            var instrumented = instrumentor.instrumentCoffee(path.resolve(file.originalPath), content);
             var js = options.noInit ? instrumented.js : instrumented.init + instrumented.js;
             file.path = file.originalPath.replace(/\.coffee$/, '.js');
-            done(null, js);
+            done(js);
         } catch (err) {
             done(err);
         }

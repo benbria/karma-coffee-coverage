@@ -158,8 +158,14 @@ describe('Karma Coffee Coverage', function() {
                 originalPath: coffeeFilePath,
                 path: coffeeFilePath
             }
-            transformer(originalSrc, file, function(err, js) {
+            transformer(originalSrc, file, function(jsOrErr) {
                 var error = null;
+                var js = null;
+                if (jsOrErr instanceof Error) {
+                    return done(jsOrErr);
+                } else {
+                    js = jsOrErr;
+                }
                 try {
                     expect(js).to.eq(istanbulSrc);
                 } catch (err) {
@@ -177,8 +183,14 @@ describe('Karma Coffee Coverage', function() {
                 originalPath: coffeeFilePath,
                 path: coffeeFilePath
             }
-            transformer(originalSrc, file, function(err, js) {
+            transformer(originalSrc, file, function(jsOrErr) {
                 var error = null;
+                var js = null;
+                if (jsOrErr instanceof Error) {
+                    return done(jsOrErr);
+                } else {
+                    js = jsOrErr;
+                }
                 try {
                     expect(js).to.eq(jscoverageSrc);
                 } catch (err) {
