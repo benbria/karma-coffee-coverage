@@ -19,7 +19,7 @@
     "url": "https://github.com/benbria/karma-coffee-coverage.git"
   },
   "dependencies": {
-    "coffee-coverage": "^0.6.2"
+    "coffee-coverage": "^2.0.1"
   },
   "devDependencies": {
     "chai": "^2.3.0",
